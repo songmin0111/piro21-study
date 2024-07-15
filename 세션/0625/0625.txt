@@ -1,0 +1,21 @@
+개발자 화면
+ctrl+shift+c
+
+장고 
+애플리케이션 프레임 워크
+-데이터베이스 관리
+
+깃-버전을 관리해주는 도구
+깃허브-원격에 있는 저장소
+
+git-bash
+git init
+ls -al
+
+git add 변경 사항 추려둔것
+git commit 변경 내역 기록
+git log 변경 내역을 조회
+
+id_ed25519  id_ed25519.pub
+
+git clone 코드

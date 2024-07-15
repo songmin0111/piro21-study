@@ -1,0 +1,4 @@
+pip Python
+apt Linux
+
+urls -> 프로젝트, app -> view

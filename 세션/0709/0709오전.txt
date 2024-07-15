@@ -1,0 +1,53 @@
+keyword = '노원구 맛집'
+
+search_input = driver.find_element(By.CSS_SELECTOR, 'div.box_searchbar > input.query')
+search_btn = driver.find_element(By.CSS_SELECTOR, 'div.box_searchbar > button.btn_search')
+
+search_input.send_keys(keyword)
+search_input.send_keys(Keys.ENTER) #방법 1
+
+sleep(1)
+
+more_btn = driver.find_element(By.CSS_SELECTOR, 'div.places > a.more')
+EC.element_to_be_clickable(more_btn) # element가 클릭이 가능한지
+more_btn.send_keys(Keys.ENTER)
+
+sleep(1) # 랜더링 할 때까지 기다린다
+
+# 스트래핑을 하고 -> 다음 버튼을 누른다
+for turn in range(1, 6):
+  # 식당 정보 수집
+  restaurants = driver.find_elements(By.CSS_SELECTOR, 'li.PlaceItem')
+
+  sleep(1)
+
+  for restaurant in restaurants:
+    restaurant_name = restaurant.find_element(By.CSS_SELECTOR, 'div.head_item > strong > a.link_name').text
+    restaurant_type = restaurant.find_element(By.CSS_SELECTOR, 'div.head_item > span.subcategory').text
+    restaurant_rate = restaurant.find_element(By.CSS_SELECTOR, 'div.rating > span.score > em.num').text
+    restaurant_place = restaurant.find_element(By.CSS_SELECTOR, 'div.info_item > div.addr > p').text
+# .text 하면 태그 안에 있는 text가 뜸.
+
+    print(f"식당 이름: {restaurant_name}")
+    print(f"식당 유형: {restaurant_type}")
+    print(f"별점: {restaurant_rate}")
+    print(f"주소: {restaurant_place}")
+
+    sleep(1) # 저는 선량한 시민입니다.. 블랙리스트에 안 들어감
+
+  # 다음 버튼으로 이동
+  if turn % 5 == 0:
+    target_btn = driver.find_element(By.ID, 'info.search.page.next')
+    # 다음 버튼이 비활성화 되어 있다면 검색 중지
+    if not target_btn.is_enabled():
+      break
+
+  else: # 숫자 버튼으로 이동
+    target_btn = driver.find_element(By.ID, f'info.search.page.no{turn % 5 + 1}')
+
+  driver.execute_script("arguments[0].click();", target_btn)
+  sleep(2) # 다음 버튼
+
+# more_btn.send_keys(Keys.ENTER) # 방법 1
+# search_btn.click() # 방법 2(안 좋음 -> 엔터가 안 눌리면 에러 발생)
+# driver.execute_script("argument[0].click();", search_btn) # 방법 3
